@@ -37,11 +37,14 @@
   - `npm run build`
 - Verificar existencia de erros de lint
   - `npm run start`
+- Rodar testes
+  - Apenas uma vez
+    - `npm run test`
+  - Em tempo real
+    - `npm run test:watch`
+  - Ambiente CI
+    - `npm run test:ci`
 
 ***
 
-## Componentes
 
-- xxx: [Ler mais](xxx)
-- xxx: [Ler Mais](xxx)
-- xxx: [Ler Mais](xxx)
