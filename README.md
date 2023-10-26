@@ -15,9 +15,8 @@
 
 ### Testes
 
-- Cypress
-  - Cypress Axe
-  - Cypress Audit - LightHouse
+- Jest
+- React Testing Library
 
 ***
 
