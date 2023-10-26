@@ -2,17 +2,15 @@ import { z } from "zod"
 import { FormProvider, useFieldArray, useForm } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ButtonCTA } from "components/Buttons/CTA"
-import { FormLabel } from "components/Global/Form/FormLabel"
-import { TextFormLabel } from "components/Global/Form/TextFormLabel"
-import { InputBasic } from "components/Global/Form/Input/Basic/Index"
-import { SelectBasic } from "components/Global/Form/Select/Basic"
-import { ErrorFeedback } from "components/Global/Form/ErrorFeedback"
+import { FormLabel } from "components/Form/FormLabel"
+import { TextFormLabel } from "components/Form/TextFormLabel"
+import { InputBasic } from "components/Form/Input/Basic/Index"
+import { SelectBasic } from "components/Form/Select/Basic"
+import { ErrorFeedback } from "components/Form/ErrorFeedback"
 import { CitiesByRegion, SelectOptionsFormatType } from "types/generals"
 import { useEffect, KeyboardEvent } from "react"
 import { ListOfPokemonsType } from "types/api"
 import { BsTrash } from "react-icons/bs"
-
-
 
 const zodSchema = z.object({
   firstName: z.string().min(3, 'Digite seu nome').max(32, 'Digite no máximo 32 letras'),
@@ -63,7 +61,6 @@ export const ScheduleAppointmentForm = ({
     formState: { isLoading, errors },
     getValues,
     setValue,
-    setError
   } = methods
 
   const { fields, append, remove } = useFieldArray({
@@ -126,7 +123,6 @@ export const ScheduleAppointmentForm = ({
   const preventEnterFromFireSubmission = (e: KeyboardEvent<HTMLFormElement>) => {
     if (e.key === 'Enter') e.preventDefault()
   }
-
 
   return (
     <div className="max-w-xl mx-auto" >
