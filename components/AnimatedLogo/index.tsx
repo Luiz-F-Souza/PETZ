@@ -35,12 +35,12 @@ export const AnimatedLogo = () => {
         className="w-9 h-9 group-hover:rotate-180 transition-all"
       />
 
-      <h2
+      <h1
         className={`text-white font-semibold text-xl ${isLogoOpen ? "" : "w-0"} transition-all whitespace-nowrap `}
         data-testid="company-name"
       >
         Centro Pokémom
-      </h2>
+      </h1>
     </Link>
   )
 }

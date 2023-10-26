@@ -12,6 +12,9 @@ module.exports = {
       },
       fontSize:{
         'full': '2rem'
+      },
+      screens:{
+        xs: "460px"
       }
     },
     colors:{

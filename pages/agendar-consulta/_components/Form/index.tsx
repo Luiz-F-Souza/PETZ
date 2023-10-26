@@ -125,11 +125,11 @@ export const ScheduleAppointmentForm = ({
   }
 
   return (
-    <div className="max-w-xl mx-auto" >
+    <div className="max-w-xl mx-auto px-5" >
       <FormProvider {...methods}>
         <form noValidate onSubmit={onSubmit} className="" id="new-appointment-form" onKeyDown={(e) => preventEnterFromFireSubmission(e)} >
 
-          <fieldset className="grid grid-cols-2 gap-5 mb-24">
+          <fieldset className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-24">
             <legend className="sr-only">Dados pessoais</legend>
 
             <FormLabel>
@@ -230,10 +230,10 @@ export const ScheduleAppointmentForm = ({
             </button>
           </fieldset>
 
-          <fieldset className="flex gap-4">
+          <fieldset className="flex flex-wrap gap-4">
             <legend className="sr-only">Data e hora para atendimento</legend>
 
-            <FormLabel className="w-full">
+            <FormLabel className="flex-grow flex-wrap">
               <TextFormLabel>Data para atendimento</TextFormLabel>
               <SelectBasic
                 autoComplete="none"
@@ -246,7 +246,7 @@ export const ScheduleAppointmentForm = ({
               <ErrorFeedback>{errors.appointmentDate?.message}</ErrorFeedback>
             </FormLabel>
 
-            <FormLabel className="w-full">
+            <FormLabel className="flex-grow">
               <TextFormLabel>Horário de atendimento</TextFormLabel>
 
               <SelectBasic
@@ -288,9 +288,9 @@ export const ScheduleAppointmentForm = ({
         <p className="text-gray-muted text-[8px]">*adicionamos uma taxa de 3%, multiplicado pelo número da geração mais alta do time, com limite de até 30%</p>
       </article>
 
-      <section className="flex justify-between items-center mb-52">
-        <h2 className="text-2xl font-bold">Valor Total: R$ 72,10</h2>
-        <ButtonCTA type="submit" form="new-appointment-form" >Concluir Agendamento</ButtonCTA>
+      <section className="flex flex-wrap justify-between items-center mb-52 gap-4">
+        <h2 className="text-2xl font-bold text-center xs:text-left flex-grow">Valor Total: R$ 72,10</h2>
+        <ButtonCTA type="submit" form="new-appointment-form" className="flex-grow " >Concluir Agendamento</ButtonCTA>
       </section>
     </div>
 

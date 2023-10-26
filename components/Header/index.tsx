@@ -11,7 +11,7 @@ export const Header: React.FC = () => {
     <header
       className="
       bg-white 
-        px-20 py-6
+        px-5 sm:px-20 py-6
         flex justify-between items-center
       "
     >

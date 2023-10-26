@@ -18,7 +18,7 @@ export default function AboutUs() {
 
       <PageDescription title="Quem Somos" description="A maior rede de tratamento de pokémom" />
 
-      <main className="max-w-[408px] mx-auto pt-9 pb-20">
+      <main className="max-w-[408px] mx-auto px-5  pt-9 pb-20">
 
         <section className="mb-3">
           <h2 className="font-bold mb-3 text-lg">O Centro Pokémom</h2>
