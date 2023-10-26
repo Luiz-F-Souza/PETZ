@@ -1,11 +1,14 @@
 "use server"
 
-import Image from "next/image"
-import Logo from "../../public/images/white-pokeball.svg"
 import Link from "next/link"
 import { PrimaryLink } from "../Buttons/PrimaryLink"
+import { usePathname } from 'next/navigation'
+import { AnimatedLogo } from "components/AnimatedLogo"
+
 
 export const Header: React.FC = () => {
+
+
 
   return (
     <header
@@ -15,26 +18,7 @@ export const Header: React.FC = () => {
         flex justify-between items-center
       "
     >
-
-      <div
-        className="
-            w-64 h-14 
-            bg-primary-500 
-            rounded-full
-            flex items-center
-            gap-5
-            px-3
-          "
-      >
-        <Image
-          src={Logo}
-          width={37}
-          height={34}
-          alt="" />
-
-        <h2 className="text-white font-semibold text-xl">Centro Pokémom</h2>
-      </div>
-
+      <AnimatedLogo />
       <nav>
         <ul className="flex gap-8">
           <li>
