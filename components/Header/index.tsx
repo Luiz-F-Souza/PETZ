@@ -2,13 +2,10 @@
 
 import Link from "next/link"
 import { PrimaryLink } from "../Buttons/PrimaryLink"
-import { usePathname } from 'next/navigation'
 import { AnimatedLogo } from "components/AnimatedLogo"
 
 
 export const Header: React.FC = () => {
-
-
 
   return (
     <header
@@ -19,13 +16,13 @@ export const Header: React.FC = () => {
       "
     >
       <AnimatedLogo />
-      <nav>
+      <nav data-testid='header-navbar'>
         <ul className="flex gap-8">
           <li>
-            <Link href="/quem-somos">Quem Somos</Link>
+            <Link data-testid="about-us-link" href="/quem-somos">Quem Somos</Link>
           </li>
           <li>
-            <PrimaryLink href="/agendar-consulta">
+            <PrimaryLink data-testid="new-appointment-link" href="/agendar-consulta">
               Agendar Consulta
             </PrimaryLink>
           </li>
