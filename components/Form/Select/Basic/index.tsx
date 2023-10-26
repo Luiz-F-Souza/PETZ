@@ -3,11 +3,8 @@ import { InputHTMLAttributes } from "react"
 import { twMerge } from "tailwind-merge"
 import { forwardRef } from "react"
 import { BsChevronDown } from "react-icons/bs"
-import { useSelectBasicViewModel } from "./ViweModel"
+import { useSelectBasicViewModel } from "./useSelectBasicViewModel"
 import { SelectOptionsFormatType } from "types/generals"
-import { useFormContext } from "react-hook-form"
-
-
 
 
 type Props = {
