@@ -11,6 +11,9 @@ import { CitiesByRegion, SelectOptionsFormatType } from "types/generals"
 import { useEffect, KeyboardEvent } from "react"
 import { ListOfPokemonsType } from "types/api"
 import { BsTrash } from "react-icons/bs"
+import { convertIntoConcurrency } from "utils/convertIntoConcurrency"
+import { useGetHigherGenerations } from "./hooks/useGetHigherGeneration"
+import { useFormViewModel } from "./useFormViewModel"
 
 const zodSchema = z.object({
   firstName: z.string().min(3, 'Digite seu nome').max(32, 'Digite no máximo 32 letras'),
@@ -21,7 +24,6 @@ const zodSchema = z.object({
     z.object(
       {
         name: z.string().min(1, 'Selecione o Pokémom'),
-        generation: z.string()
       }
     )
   ),
@@ -29,7 +31,7 @@ const zodSchema = z.object({
   appointmentTime: z.string().min(1, 'Selecione o horário')
 })
 
-type FormType = z.infer<typeof zodSchema>
+export type NewAppointmentFormType = z.infer<typeof zodSchema>
 
 type Props = {
   availableDates: SelectOptionsFormatType,
@@ -47,10 +49,10 @@ export const ScheduleAppointmentForm = ({
   listOfPokemons
 }: Props) => {
 
-  const methods = useForm<FormType>({
+  const methods = useForm<NewAppointmentFormType>({
     resolver: zodResolver(zodSchema),
     defaultValues: {
-      pokemons: [{ generation: '', name: '' }]
+      pokemons: [{ name: '' }]
     }
   })
 
@@ -58,76 +60,28 @@ export const ScheduleAppointmentForm = ({
     control,
     register,
     handleSubmit,
-    formState: { isLoading, errors },
     getValues,
     setValue,
+    formState: { isLoading, errors },
   } = methods
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: 'pokemons'
-  })
-
-
-  const onSubmit = handleSubmit(data => {
-
-  })
-
-
-  const selectedRegion = getValues('region')
-
-  const handleRemovePokemomField = (index: number) => {
-    remove(index)
-  }
-  const handleAddPokemomField = () => {
-    const currentNumberOfPokemons = fields.length
-
-    if (currentNumberOfPokemons === 6) return
-
-    append({
-      generation: '',
-      name: ''
-    })
-  }
-
-  useEffect(() => {
-    setValue('city', '')
-  }, [selectedRegion, setValue])
-
-  const currentRegionCities = citiesByRegion[selectedRegion]
-
-  const citiesOptions: SelectOptionsFormatType =
-    currentRegionCities ?
-      currentRegionCities.cities.map(city => {
-
-        return {
-          id: city.locationUrl,
-          value: city.name,
-          label: city.name
-        }
-      })
-      : [{
-        id: 'not-found',
-        label: 'Primeiro, Selecione uma região',
-        value: 'selecione-uma-regiao'
-      }]
-
-  const listOfPokemonsOptions: SelectOptionsFormatType = listOfPokemons.results.map(pokemom => {
-    return {
-      id: pokemom.url,
-      label: pokemom.name,
-      value: pokemom.name
-    }
-  })
-
-  const preventEnterFromFireSubmission = (e: KeyboardEvent<HTMLFormElement>) => {
-    if (e.key === 'Enter') e.preventDefault()
-  }
+  const {
+    citiesOptions,
+    listOfPokemonsOptions,
+    pokemonsFields,
+    currentValueToBillFromGenerationTax,
+    numberOfPokemonsToSchedule,
+    subtotalToPay,
+    handleAddPokemomField,
+    handleRemovePokemomField,
+    preventEnterFromFireSubmission,
+    onSubmit
+  } = useFormViewModel({ listOfPokemons, citiesByRegion, control, getValues, setValue })
 
   return (
     <div className="max-w-xl mx-auto px-5" >
       <FormProvider {...methods}>
-        <form noValidate onSubmit={onSubmit} className="" id="new-appointment-form" onKeyDown={(e) => preventEnterFromFireSubmission(e)} >
+        <form noValidate onSubmit={handleSubmit(onSubmit)} className="" id="new-appointment-form" onKeyDown={(e) => preventEnterFromFireSubmission(e)} >
 
           <fieldset className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-24">
             <legend className="sr-only">Dados pessoais</legend>
@@ -188,7 +142,7 @@ export const ScheduleAppointmentForm = ({
             <legend className="text-xs text-gray-700 font-bold mb-2 ">Cadastre seu time</legend>
             <p className="mb-4 text-gray-muted text-xs">Atendemos até 06 pokémons por vez</p>
 
-            {fields.map((field, index) => {
+            {pokemonsFields.map((field, index) => {
 
               const currentPokemomNumber = (index + 1).toString().padStart(2, "0")
 
@@ -268,7 +222,9 @@ export const ScheduleAppointmentForm = ({
       <article className="mb-8">
         <section className="flex items-center justify-between">
           <p className="text-gray-muted text-sm">Número de pokémons a serem atendidos:</p>
-          <p className="text-gray-muted text-sm">01</p>
+          <p className="text-gray-muted text-sm">
+            {numberOfPokemonsToSchedule.toString().padStart(2, "0")}
+          </p>
         </section>
 
         <section className="flex items-center justify-between">
@@ -278,12 +234,12 @@ export const ScheduleAppointmentForm = ({
 
         <section className="flex items-center justify-between">
           <p className="text-gray-muted text-sm">Subtotal:</p>
-          <p className="text-gray-muted text-sm">R$ 70,00</p>
+          <p className="text-gray-muted text-sm">{convertIntoConcurrency(subtotalToPay)}</p>
         </section>
 
         <section className="flex items-center justify-between">
           <p className="text-gray-muted text-sm">Taxa geracional*:</p>
-          <p className="text-gray-muted text-sm">R$ 2,10</p>
+          <p className="text-gray-muted text-sm">{convertIntoConcurrency(currentValueToBillFromGenerationTax)}</p>
         </section>
         <p className="text-gray-muted text-[8px]">*adicionamos uma taxa de 3%, multiplicado pelo número da geração mais alta do time, com limite de até 30%</p>
       </article>
