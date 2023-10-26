@@ -10,9 +10,9 @@ type Props = InputHTMLAttributes<HTMLInputElement>
 
 export const InputBasic = forwardRef<HTMLInputElement, Props>(({ className: newClassName, ...props }, ref) => {
 
+
   return (
     <input
-      readOnly
       ref={ref}
       className={
         twMerge(
