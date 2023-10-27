@@ -18,7 +18,7 @@ export const MobileMenu = () => {
   }
   return (
     <>
-      <div>
+      <div className="block sm:hidden">
 
         <MobileMenuButton isOpen={isOpen} handleToggle={handleToggle} />
 
@@ -34,11 +34,11 @@ export const MobileMenu = () => {
         `}>
           <ul className="flex flex-col text-center gap-2 mt-20">
             <li>
-              <Link onClick={handleToggle} className="block p-2" data-testid="about-us-link" href="/quem-somos">Quem Somos</Link>
+              <Link onClick={handleToggle} className="block p-2" data-testid="about-us-mobile-link" href="/quem-somos">Quem Somos</Link>
             </li>
             <li>
               <PrimaryLink
-                data-testid="new-appointment-link"
+                data-testid="new-appointment-mobile-link"
                 href="/agendar-consulta"
                 className="block"
                 onClick={handleToggle}
