@@ -35,6 +35,9 @@ export const useFormViewModel = (props: Props): FormModelInterface => {
 
   const { data: timesAvailables } = useSWR<SelectOptionsFormatType>('/api/scheduling/time', () => fetchAvailableTimes(selectedDate))
 
+
+  const selectedRegion = getValues('region')
+
   const {
     fields: pokemonsFields,
     append: appendIntoPokemonsFields,
@@ -49,24 +52,27 @@ export const useFormViewModel = (props: Props): FormModelInterface => {
     control,
     name: 'pokemons',
   })
-
-  
-
-  const numberOfPokemonsToSchedule = pokemonsFieldsInRealTime.length
-  const subtotalToPay = numberOfPokemonsToSchedule * VALUE_TO_PAY_PER_POKEMOM
+ 
 
   const { higherGeneration } = useGetHigherGenerations({ team: pokemonsFieldsInRealTime, listOfPokemons })
+
   const currentGenerationTax = higherGeneration * 0.03
+
   const isCurrentGenerationTaxHigherThanLimit = higherGeneration * 0.03 > 0.3
+
+
+  const numberOfPokemonsToSchedule = pokemonsFieldsInRealTime.length
+
+  const subtotalToPay = numberOfPokemonsToSchedule * VALUE_TO_PAY_PER_POKEMOM
 
   const currentValueToBillFromGenerationTax =
     isCurrentGenerationTaxHigherThanLimit ?
       (0.3 * subtotalToPay) :
       currentGenerationTax * subtotalToPay
 
+  const totalToPay = subtotalToPay + currentValueToBillFromGenerationTax
 
-
-  const selectedRegion = getValues('region')
+  const currentRegionCities = citiesByRegion[selectedRegion]
 
   const handleRemovePokemomField = (index: number) => {
     removeFromPokemonsFields(index)
@@ -85,8 +91,7 @@ export const useFormViewModel = (props: Props): FormModelInterface => {
     setValue('city', '')
   }, [selectedRegion, setValue])
 
-  const currentRegionCities = citiesByRegion[selectedRegion]
-
+  
   const citiesOptions: SelectOptionsFormatType =
     currentRegionCities ?
       currentRegionCities.cities.map(city => {
@@ -115,9 +120,9 @@ export const useFormViewModel = (props: Props): FormModelInterface => {
     if (e.key === 'Enter') e.preventDefault()
   }
 
-
-
   const [feedbackData, setFeedbackData] = useState<FeedbackCardProps | null>(null)
+
+  const handleNewAppointment = () => setFeedbackData(null)
 
   // Apenas para que todas as telas propostas no desafio sejam vistas
   const [shouldFakeSubmitError, setShoudFakeSubmitError] = useState(true)
@@ -156,14 +161,14 @@ export const useFormViewModel = (props: Props): FormModelInterface => {
     }
   }
 
-  const handleNewAppointment = () => setFeedbackData(null)
-
+ 
   return {
     citiesOptions,
     listOfPokemonsOptions,
     pokemonsFields,
     numberOfPokemonsToSchedule,
     subtotalToPay,
+    totalToPay,
     datesAvailables,
     timesAvailables,
     feedbackData,
