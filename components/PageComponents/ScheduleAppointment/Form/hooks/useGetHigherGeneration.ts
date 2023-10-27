@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 import { ListOfPokemonsType } from "types/api"
-import { getPokemomGeneration } from "../_utils/getPokemomGeneration"
+import { getPokemomGeneration } from "../utils/getPokemomGeneration"
 
 
 type Props = {
