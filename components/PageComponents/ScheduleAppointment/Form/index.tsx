@@ -196,7 +196,7 @@ export const ScheduleAppointmentForm = ({
 
                   <button
                     type="button"
-                    className="border-2 rounded-full p-3 my-8 font-bold text-xs"
+                    className="border-2 rounded-full p-3 mb-8 font-bold text-xs"
                     onClick={handleAddPokemomField}
                   >
                     Adicionar novo pokémom ao time... +
