@@ -1,13 +1,13 @@
 import { CitiesByRegion, SelectOptionsFormatType } from "types/generals"
 import { FormModelInterface } from "./FormModel"
-import { useGetHigherGenerations } from "./_hooks/useGetHigherGeneration"
-import { Control, useFieldArray, UseFormSetValue, UseFormGetValues, UseFormReset } from 'react-hook-form'
+import { useGetHigherGenerations } from "./hooks/useGetHigherGeneration"
+import { Control, useFieldArray, UseFormSetValue, UseFormGetValues, UseFormReset, useWatch } from 'react-hook-form'
 import { useEffect, KeyboardEvent, useState } from "react"
 import { NewAppointmentFormType } from "."
 import { ListOfPokemonsType } from "types/api"
 import useSWR from "swr"
-import { fetchAvailableDates } from "./_utils/fetchAvailableDates"
-import { fetchAvailableTimes } from "./_utils/fetchAvailableTimes"
+import { fetchAvailableDates } from "./utils/fetchAvailableDates"
+import { fetchAvailableTimes } from "./utils/fetchAvailableTimes"
 import CheckIconPath from 'public/check.svg'
 import WarningIconPath from 'public/warning.svg'
 import { FeedbackCardProps } from "../FeedbackCard"
@@ -38,16 +38,24 @@ export const useFormViewModel = (props: Props): FormModelInterface => {
   const {
     fields: pokemonsFields,
     append: appendIntoPokemonsFields,
-    remove: removeFromPokemonsFields
+    remove: removeFromPokemonsFields,
+
   } = useFieldArray<NewAppointmentFormType>({
     control,
-    name: 'pokemons'
+    name: 'pokemons',
   })
 
-  const numberOfPokemonsToSchedule = pokemonsFields.length
+  const pokemonsFieldsInRealTime = useWatch({
+    control,
+    name: 'pokemons',
+  })
+
+  
+
+  const numberOfPokemonsToSchedule = pokemonsFieldsInRealTime.length
   const subtotalToPay = numberOfPokemonsToSchedule * VALUE_TO_PAY_PER_POKEMOM
 
-  const { higherGeneration } = useGetHigherGenerations({ team: pokemonsFields, listOfPokemons })
+  const { higherGeneration } = useGetHigherGenerations({ team: pokemonsFieldsInRealTime, listOfPokemons })
   const currentGenerationTax = higherGeneration * 0.03
   const isCurrentGenerationTaxHigherThanLimit = higherGeneration * 0.03 > 0.3
 
