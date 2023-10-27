@@ -3,6 +3,8 @@
 import Link from "next/link"
 import { PrimaryLink } from "../Buttons/PrimaryLink"
 import { AnimatedLogo } from "components/AnimatedLogo"
+import { MobileMenu } from "./MobileMenu"
+
 
 
 export const Header: React.FC = () => {
@@ -16,7 +18,8 @@ export const Header: React.FC = () => {
       "
     >
       <AnimatedLogo />
-      <nav data-testid='header-navbar'>
+
+      <nav data-testid='header-navbar' className="hidden sm:block">
         <ul className="flex gap-8">
           <li>
             <Link data-testid="about-us-link" href="/quem-somos">Quem Somos</Link>
@@ -28,6 +31,7 @@ export const Header: React.FC = () => {
           </li>
         </ul>
       </nav>
+      <MobileMenu />
 
     </header>
   )
