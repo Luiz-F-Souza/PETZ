@@ -15,6 +15,9 @@ module.exports = {
       },
       screens:{
         xs: "460px"
+      },
+      maxWidth:{
+        form: '408px'
       }
     },
     colors:{
@@ -23,8 +26,13 @@ module.exports = {
       },
       gray: {
         muted: '#747474',
+        100: "rgba(223, 134, 134, 0.04)",
         300: '#D5D5D5',
         700: '#1D1D1D'
+      },
+
+      red:{
+        100: "#DF8686"
       },
       white: '#fff',
       "off-white": '#EEEEEE',
