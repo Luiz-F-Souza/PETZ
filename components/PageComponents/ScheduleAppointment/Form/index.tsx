@@ -78,6 +78,7 @@ export const ScheduleAppointmentForm = ({
     currentValueToBillFromGenerationTax,
     numberOfPokemonsToSchedule,
     subtotalToPay,
+    totalToPay,
     datesAvailables,
     timesAvailables,
     feedbackData,
@@ -293,7 +294,7 @@ export const ScheduleAppointmentForm = ({
             flex-grow
           "
               >
-                Valor Total: R$ 72,10
+                Valor Total: {convertIntoConcurrency(totalToPay)}
               </h2>
               <ButtonCTA
                 type="submit"

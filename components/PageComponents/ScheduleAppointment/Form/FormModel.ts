@@ -11,6 +11,7 @@ export interface FormModelInterface {
   currentValueToBillFromGenerationTax: number
   numberOfPokemonsToSchedule: number
   subtotalToPay: number
+  totalToPay: number
   timesAvailables: SelectOptionsFormatType | undefined
   datesAvailables: SelectOptionsFormatType | undefined
   feedbackData: FeedbackCardProps | null
