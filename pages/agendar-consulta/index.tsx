@@ -3,17 +3,19 @@
 import Head from "next/head";
 import { PageDescription } from "components/PageDescription";
 import { ScheduleAppointmentForm } from "components/PageComponents/ScheduleAppointment/Form";
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { CitiesByRegion, SelectOptionsFormatType } from "types/generals";
 import { fetchingData } from "../../@utils/Pages/ScheduleAppointment/fetchingData";
+import { ListOfPokemonsType } from "types/api";
 
-export async function getServerSideProps({ res }: GetServerSidePropsContext) {
 
-  res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=600, stale-while-revalidate=3600'
-  )
+type ApiResponse = {
+  pokeRegions: SelectOptionsFormatType;
+  citiesByRegion: CitiesByRegion;
+  listOfPokemons: ListOfPokemonsType;
+}
 
+export const getStaticProps = (async (context) => {
   const { pokeRegions, citiesData, listOfPokemons } = await fetchingData()
 
   const citiesByRegion: CitiesByRegion = {}
@@ -34,7 +36,6 @@ export async function getServerSideProps({ res }: GetServerSidePropsContext) {
     citiesByRegion[citieInfo.name] = object
   })
 
-
   const pokeRegionsOptions: SelectOptionsFormatType = pokeRegions.results.map(region => {
     return {
       id: region.url,
@@ -48,13 +49,16 @@ export async function getServerSideProps({ res }: GetServerSidePropsContext) {
       pokeRegions: pokeRegionsOptions,
       citiesByRegion,
       listOfPokemons
-    }
+    },
+    revalidate: 60
   }
-}
+
+
+}) satisfies GetStaticProps<ApiResponse>
 
 
 const DESCRIPTION_TEXT_META_TAG = "Agende sua consulta! Curamos pokémons em apenas 5 segundos. Trate com amor seus Pokémons "
-export default function ScheduleAppointment(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function ScheduleAppointment(props: InferGetStaticPropsType<typeof getStaticProps>) {
 
   const { pokeRegions, citiesByRegion, listOfPokemons } = props
 
