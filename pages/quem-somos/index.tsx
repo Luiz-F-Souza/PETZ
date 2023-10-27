@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Link from "next/link";
 import { PageDescription } from "components/PageDescription";
 
 
@@ -13,12 +12,15 @@ export default function AboutUs() {
         <title>Centro Pokémom: Quem somos</title>
         <meta name="description" content={DESCRIPTION_TEXT_META_TAG} />
         <meta name="og:description" content={DESCRIPTION_TEXT_META_TAG} />
-        <meta name="telegram:description" content={DESCRIPTION_TEXT_META_TAG} /> 
+        <meta name="telegram:description" content={DESCRIPTION_TEXT_META_TAG} />
+
+        <meta name="keywords" content="Centro Pokémon, pokémons, sobre centro pokémons" />
+        <meta name="robots" content="index, follow" />
       </Head>
 
       <PageDescription title="Quem Somos" description="A maior rede de tratamento de pokémom" />
 
-      <main className="max-w-[408px] mx-auto px-5  pt-9 pb-20">
+      <main className="max-w-form mx-auto px-5  pt-9 pb-20">
 
         <section className="mb-3">
           <h2 className="font-bold mb-3 text-lg">O Centro Pokémom</h2>
