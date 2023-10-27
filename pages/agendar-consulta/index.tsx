@@ -2,51 +2,23 @@
 
 import Head from "next/head";
 import { PageDescription } from "components/PageDescription";
-import { ScheduleAppointmentForm } from "./_components/Form";
-import { PokeRegionsType, SchedulingDatesType, SchedulingTimesType } from "types/api";
-import { InferGetStaticPropsType } from "next";
-import { randomUUID } from "crypto";
+import { ScheduleAppointmentForm } from "components/PageComponents/ScheduleAppointment/Form";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { CitiesByRegion, SelectOptionsFormatType } from "types/generals";
-import { fetchingData } from "./utils/fetchingData";
+import { fetchingData } from "../../@utils/Pages/ScheduleAppointment/fetchingData";
 
+export async function getServerSideProps({ res }: GetServerSidePropsContext) {
 
-
-export default function ScheduleAppointment({ dates, times, pokeRegions, citiesByRegion, listOfPokemons }: InferGetStaticPropsType<typeof getStaticProps>) {
-
- 
-
-  return (
-    <>
-      <Head>
-
-      </Head>
-
-      <main>
-
-        <PageDescription title="Agendar Consulta" description="Recupere seus pokémons em 5 segundos" />
-
-        <h2 className="text-center text-2xl font-bold my-8 text-gray-700">Preencha o formulário abaixo para agendar sua consulta</h2>
-        <ScheduleAppointmentForm 
-          availableDates={dates} 
-          availableTimes={times} 
-          pokeRegions={pokeRegions}
-          citiesByRegion={citiesByRegion}
-          listOfPokemons={listOfPokemons}
-        />
-
-      </main>
-    </>
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=600, stale-while-revalidate=3600'
   )
-}
 
-
-export async function getStaticProps() {
-
-  const { dates, times, pokeRegions, citiesData, listOfPokemons } = await fetchingData()
+  const { pokeRegions, citiesData, listOfPokemons } = await fetchingData()
 
   const citiesByRegion: CitiesByRegion = {}
 
-  citiesData.forEach( citieInfo => {
+  citiesData.forEach(citieInfo => {
 
     const object = {
       id: citieInfo.id,
@@ -62,27 +34,6 @@ export async function getStaticProps() {
     citiesByRegion[citieInfo.name] = object
   })
 
-  const optionsDates: SelectOptionsFormatType = dates.map((date) => {
-    return {
-      label: date,
-      value: date,
-      id: randomUUID()
-    }
-  })
-
-  const optionsTimes: SelectOptionsFormatType = times.map((time) => {
-
-    const timeArray = time.split(":")
-    const hour = timeArray[0]
-    const minutes = timeArray[1]
-    const hourAndMinute = `${hour}:${minutes}`
-
-    return {
-      label: hourAndMinute,
-      value: time,
-      id: randomUUID()
-    }
-  })
 
   const pokeRegionsOptions: SelectOptionsFormatType = pokeRegions.results.map(region => {
     return {
@@ -94,14 +45,48 @@ export async function getStaticProps() {
 
   return {
     props: {
-      dates: optionsDates,
-      times: optionsTimes,
       pokeRegions: pokeRegionsOptions,
       citiesByRegion,
       listOfPokemons
-    },
-    revalidate: 10
+    }
   }
 }
+
+
+const DESCRIPTION_TEXT_META_TAG = "Agende sua consulta! Curamos pokémons em apenas 5 segundos. Trate com amor seus Pokémons "
+export default function ScheduleAppointment(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
+
+  const { pokeRegions, citiesByRegion, listOfPokemons } = props
+
+
+  return (
+    <>
+      <Head>
+        <title>Centro Pokémon: nova consulta</title>
+        <meta name="description" content={DESCRIPTION_TEXT_META_TAG} />
+        <meta name="og:description" content={DESCRIPTION_TEXT_META_TAG} />
+        <meta name="telegram:description" content={DESCRIPTION_TEXT_META_TAG} />
+
+        <meta name="keywords" content="Centro Pokémon, pokémons, consulta, cuidar de pokémons, curar pokémons, emergência pokémom" />
+        <meta name="robots" content="index, follow" />
+      </Head>
+
+      <main>
+
+        <PageDescription title="Agendar Consulta" description="Recupere seus pokémons em 5 segundos" />
+
+        <ScheduleAppointmentForm
+          pokeRegions={pokeRegions}
+          citiesByRegion={citiesByRegion}
+          listOfPokemons={listOfPokemons}
+        />
+
+      </main>
+    </>
+  )
+}
+
+
+
 
 
