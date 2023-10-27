@@ -12,7 +12,9 @@ type Props = {
 } & InputHTMLAttributes<HTMLInputElement>
 
 
-export const SelectBasic = forwardRef<HTMLInputElement, Props>(({ options, className: newClassName, ...inputProps }, inputRef) => {
+export const SelectBasic = forwardRef<HTMLInputElement, Props>((props, inputRef) => {
+
+  const { options, className: newClassName, ...inputProps } = props
 
   const inputName = inputProps.name
 
@@ -51,7 +53,10 @@ export const SelectBasic = forwardRef<HTMLInputElement, Props>(({ options, class
       >
         <input
           ref={inputRef}
-          className="focus-within:outline-none flex-grow"
+          className="
+            focus-within:outline-none 
+            flex-grow
+          "
           {...inputProps}
         />
 
